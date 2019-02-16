@@ -15,6 +15,35 @@ public class Purchase {
     private double amount;
     private LocalDateTime date;
     private String name;
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     private String category;
     private String description;
 
@@ -42,6 +71,11 @@ public class Purchase {
     public double getAmount() {
         return this.amount;
     }
+
+    public String getName() {
+        return this.name;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public LocalDate getLocalDate() {
