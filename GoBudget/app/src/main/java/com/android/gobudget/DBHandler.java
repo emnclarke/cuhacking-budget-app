@@ -12,8 +12,13 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "transactionsDB.db";
     public static final String TABLE_NAME = "Purchases";
-    public static final String COLUMN_ID = "StudentID";
-    public static final String COLUMN_NAME = "StudentName";
+    public static final String COLUMN_ID = "PurchaseID";
+    public static final String COLUMN_DATE = "Date";
+    public static final String COLUMN_AMOUNT = "Date";
+    public static final String COLUMN_NAME = "Date";
+    public static final String COLUMN_CATEGORY = "Date";
+    public static final String COLUMN_DESCRIPTION = "Date";
+
 
     //initialize the database
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -21,7 +26,11 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {}
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_TABLE = "CREATE TABLE" + TABLE_NAME + "(" + COLUMN_ID +
+                "INTEGER PRIMARYKEY," + COLUMN_NAME + "TEXT )";
+        db.execSQL(CREATE_TABLE);
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {}
