@@ -12,9 +12,18 @@ import java.time.DayOfWeek;
 
 
 public class Purchase {
+    private long id;
     private double amount;
     private LocalDateTime date;
     private String name;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setAmount(double amount) {
         this.amount = amount;
@@ -54,14 +63,6 @@ public class Purchase {
         this.name = name;
         this.category = category;
         this.description = description;
-    }
-
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void changeCategory(String category) {
-        this.category = category;
     }
 
     public String getCategory() {
