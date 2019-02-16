@@ -12,14 +12,14 @@ import java.time.DayOfWeek;
 
 
 public class Purchase {
-    private float amount;
+    private double amount;
     private LocalDateTime date;
     private String name;
     private String category;
     private String description;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Purchase(float amount, String name, String category, String description) {
+    public Purchase(double amount, String name, String category, String description) {
         date = LocalDateTime.now();
         this.amount = amount;
         this.name = name;
@@ -35,12 +35,46 @@ public class Purchase {
         this.category = category;
     }
 
+    public String getCategory() {
+        return this.category;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LocalDate getLocalDate() {
+        return date.toLocalDate();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean thisWeek() {
-        LocalDate currDate = LocalDate.now();
+        LocalDate currDate = date.toLocalDate();
         LocalDate previousMonday = currDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        return (currDate.isAfter(previousMonday));
+    }
 
-        return false;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean thisBiWeek() {
+        LocalDate currDate = date.toLocalDate();
+        LocalDate previousBiMonday = currDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        previousBiMonday = previousBiMonday.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        return (currDate.isAfter(previousBiMonday));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean thisMonth() {
+        LocalDate currDate = date.toLocalDate();
+        LocalDate firstDayOfMonth = currDate.withDayOfMonth(1);
+        return (currDate.isAfter(firstDayOfMonth));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean thisYear() {
+        LocalDate currDate = date.toLocalDate();
+        LocalDate firstDayOfYear = currDate.withDayOfYear(1);
+        return (currDate.isAfter(firstDayOfYear));
     }
 
 }
