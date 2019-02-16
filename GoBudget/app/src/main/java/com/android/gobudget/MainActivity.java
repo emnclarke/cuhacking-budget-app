@@ -51,4 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void loadStudents(View view) {
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        lst.setText(dbHandler.loadHandler());
+        studentid.setText("");
+        studentname.setText("");
+    }
 }
