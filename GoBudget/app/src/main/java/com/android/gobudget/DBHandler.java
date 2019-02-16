@@ -26,14 +26,22 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {}
 
-    public String loadHandler() {}
+    public String loadHandler() {
+        return "";
+    }
 
     public void addHandler(Purchase purchase) {}
 
-    public Purchase findHandler(String studentname) {}
+    public Purchase findHandler(String purchaseName) {
+        return null;
+    }
 
-    public boolean deleteHandler(int ID) {}
+    public boolean deleteHandler(int ID) {
+        return false;
+    }
 
-    public boolean updateHandler(int ID, String name) {}
+    public boolean updateHandler(int ID, String name) {
+        return false;
+    }
 
 }
