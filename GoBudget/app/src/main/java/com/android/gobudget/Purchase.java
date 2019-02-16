@@ -1,4 +1,4 @@
-package com.andriod.gobudget;
+package com.android.gobudget;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
