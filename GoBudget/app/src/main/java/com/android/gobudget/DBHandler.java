@@ -14,10 +14,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "Purchases";
     public static final String COLUMN_ID = "PurchaseID";
     public static final String COLUMN_DATE = "Date";
-    public static final String COLUMN_AMOUNT = "Date";
-    public static final String COLUMN_NAME = "Date";
-    public static final String COLUMN_CATEGORY = "Date";
-    public static final String COLUMN_DESCRIPTION = "Date";
+    public static final String COLUMN_AMOUNT = "Amount";
+    public static final String COLUMN_NAME = "Name";
+    public static final String COLUMN_CATEGORY = "Category";
+    public static final String COLUMN_DESCRIPTION = "Description";
 
 
     //initialize the database
@@ -27,8 +27,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE" + TABLE_NAME + "(" + COLUMN_ID +
-                "INTEGER PRIMARYKEY," + COLUMN_NAME + "TEXT )";
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + COLUMN_ID
+                + "INTEGER PRIMARYKEY," + COLUMN_DATE + "TEXT," + COLUMN_AMOUNT + "REAL,"
+                + COLUMN_NAME + "TEXT, " + COLUMN_CATEGORY + "TEXT,"
+                + COLUMN_DESCRIPTION + "TEXT )";
         db.execSQL(CREATE_TABLE);
     }
 
@@ -39,7 +41,9 @@ public class DBHandler extends SQLiteOpenHelper {
         return "";
     }
 
-    public void addHandler(Purchase purchase) {}
+    public void addHandler(Purchase purchase) {
+        
+    }
 
     public Purchase findHandler(String purchaseName) {
         return null;
