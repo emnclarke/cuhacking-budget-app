@@ -56,6 +56,9 @@ public class Purchase {
     private String category;
     private String description;
 
+    public Purchase() {
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Purchase(double amount, String name, String category, String description) {
         date = LocalDateTime.now();
