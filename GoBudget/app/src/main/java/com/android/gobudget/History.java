@@ -57,11 +57,11 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
             long id = purchase.getId();
 
             LocalDateTime date = purchase.getDate();
-            String amount = String.format("%1$20s",purchase.getAmount());
-            String name =  String.format("%1$20s", purchase.getName());
-            String category = purchase.getCategory();
+            String amount = String.format("%1$17s",purchase.getAmount());
+            String name =  String.format("%1$17s", purchase.getName());
+            String category = String.format("%1$17s", purchase.getCategory());
             String description = purchase.getDescription();
-            db += date.format(dateTimeFormatter) + " " +  name + " " + amount + " " +
+            db += date.format(dateTimeFormatter) + " " +  category + " " + amount + " " +
                     System.getProperty("line.separator");
         }
 
