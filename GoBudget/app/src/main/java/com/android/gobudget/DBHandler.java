@@ -80,10 +80,10 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void addCategory(String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("ID", System.currentTimeMillis());
         values.put("Category", category);
-        SQLiteDatabase db = this.getWritableDatabase();
         db.insert("Categories", null, values);
         db.close();
     }
