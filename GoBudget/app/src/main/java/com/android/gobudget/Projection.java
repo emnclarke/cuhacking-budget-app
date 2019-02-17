@@ -2,6 +2,7 @@ package com.android.gobudget;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.gobudget.R;
@@ -31,9 +34,13 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -47,10 +54,17 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 public class Projection extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView mStartDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateStartListner;
+    private String startDate;
 
     private TextView mEndDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateEndListner;
+    private String endDate;
 
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    TextView dblist;
+
+    LocalDateTime start;
+    LocalDateTime end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +93,7 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,7 +152,7 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         return true;
     }
 
-    public void graphAndButtons(){
+    public void graphAndButtons() {
         mStartDisplayDate = (TextView) findViewById(R.id.start_date);
         mEndDisplayDate = (TextView) findViewById(R.id.end_date);
 
@@ -155,6 +170,7 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
                         mDateStartListner,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 86400000);
                 dialog.show();
             }
         });
@@ -162,8 +178,19 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         mDateStartListner = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
-                String date = dayOfMonth + "/" + month +"/" + year;
+                month = month + 1;
+                String date = "";
+                if (month < 10 && dayOfMonth < 10) {
+                    date = year + "-0" + month + "-" + "0" + dayOfMonth;
+                } else if (month >= 10 && dayOfMonth < 10) {
+                    date = year + "-" + month + "-" + "0" + dayOfMonth;
+                } else if (month < 10 && dayOfMonth >= 10) {
+                    date = year + "-0" + month + "-" + dayOfMonth;
+                } else {
+                    date = year + "-" + month + "-" + dayOfMonth;
+                }
+                startDate = date;
+                start = LocalDateTime.of(year, month, dayOfMonth, 0, 0, 1);
                 mStartDisplayDate.setText(date);
             }
         };
@@ -182,6 +209,7 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
                         mDateEndListner,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 dialog.show();
             }
         });
@@ -189,26 +217,64 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         mDateEndListner = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
-                String date = dayOfMonth + "/" + month +"/" + year;
+                month = month + 1;
+                String date = "";
+                if (month < 10 && dayOfMonth < 10) {
+                    date = year + "-0" + month + "-" + "0" + dayOfMonth;
+                } else if (month >= 10 && dayOfMonth < 10) {
+                    date = year + "-" + month + "-" + "0" + dayOfMonth;
+                } else if (month < 10 && dayOfMonth >= 10) {
+                    date = year + "-0" + month + "-" + dayOfMonth;
+                } else {
+                    date = year + "-" + month + "-" + dayOfMonth;
+                }
+                endDate = date;
+                end = LocalDateTime.of(year, month, dayOfMonth, 23, 59, 59);
+                //throw new RuntimeException("Date: " + endDate);
                 mEndDisplayDate.setText(date);
+                startGraph();
+
             }
         };
 
 
-        LineChart chart = (LineChart)findViewById(R.id.chart);
-        chart.setDragEnabled(true);
+    }
+    public void startGraph(){
+
+
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+
+        String db = "";
+        ArrayList<Purchase> purchases = dbHandler.loadHandler();
+
 
         ArrayList<EntryPoint> xyvalue = new ArrayList<>();
-        int[] yvalues = {1,4,5,6,7,3,4,5,6};
-        int[] xvalues = {1,2,3,4,5,6,7,8,9};
-        for(int i=0;i<yvalues.length; i++){
-            xyvalue.add(new EntryPoint(xvalues[i], yvalues[i]));
+        PurchaseList purchaseList = new PurchaseList("Temp");
+
+        int total = 0;
+        for (Purchase purchase : purchases) {
+            LocalDateTime date = purchase.getDate();
+
+            //Compare to start and end date
+            //if greater or equal to start date, count the amount of that day
+            //increment the day
+            //count that day
+            //stop at end day
+            //date.compareTo(start) >= 0 && date.compareTo(end) < 1
+           total += (int)purchase.getAmount();
+           xyvalue.add(new EntryPoint(date.getDayOfMonth(), total));
+
+
         }
 
         List<Entry> entries = new ArrayList<>();
 
-        for (EntryPoint i : xyvalue){
+
+        LineChart chart = (LineChart) findViewById(R.id.chart);
+        chart.setDragEnabled(true);
+
+
+        for (EntryPoint i : xyvalue) {
             entries.add(new Entry(i.getX(), i.getY()));
         }
 
@@ -229,12 +295,16 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         YAxis left = chart.getAxisLeft();
         left.setDrawGridLines(false); // no grid lines
         left.setDrawZeroLine(true); // draw a zero line
+        left.setAxisMinimum(0);
+        chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
+
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
+
 
         chart.setTouchEnabled(false);
         chart.setNoDataText("Empty");
@@ -242,7 +312,5 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         chart.invalidate();
 
     }
-
-
 
 }

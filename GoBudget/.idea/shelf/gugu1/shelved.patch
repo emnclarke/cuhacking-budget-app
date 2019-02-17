@@ -1,0 +1,156 @@
+Index: app/src/main/java/com/android/gobudget/Projection.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.gobudget;\r\n\r\nimport android.app.DatePickerDialog;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.support.design.widget.FloatingActionButton;\r\nimport android.support.design.widget.NavigationView;\r\nimport android.support.design.widget.Snackbar;\r\nimport android.support.v4.view.GravityCompat;\r\nimport android.support.v4.widget.DrawerLayout;\r\nimport android.support.v7.app.ActionBarDrawerToggle;\r\nimport android.support.v7.app.AppCompatActivity;\r\nimport android.support.v7.widget.Toolbar;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.TextView;\r\n\r\nimport com.example.gobudget.R;\r\nimport android.app.DatePickerDialog;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.ColorDrawable;\r\nimport android.os.Bundle;\r\nimport android.support.design.widget.FloatingActionButton;\r\nimport android.support.design.widget.Snackbar;\r\nimport android.support.v7.app.AppCompatActivity;\r\nimport android.support.v7.widget.Toolbar;\r\nimport android.view.View;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.widget.DatePicker;\r\nimport android.widget.TextView;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Calendar;\r\nimport java.util.List;\r\n\r\nimport com.github.mikephil.charting.charts.LineChart;\r\nimport com.github.mikephil.charting.components.LimitLine;\r\nimport com.github.mikephil.charting.components.XAxis;\r\nimport com.github.mikephil.charting.components.YAxis;\r\nimport com.github.mikephil.charting.data.Entry;\r\nimport com.github.mikephil.charting.data.LineData;\r\nimport com.github.mikephil.charting.data.LineDataSet;\r\nimport com.github.mikephil.charting.interfaces.datasets.ILineDataSet;\r\n\r\npublic class Projection extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {\r\n    private TextView mStartDisplayDate;\r\n    private DatePickerDialog.OnDateSetListener mDateStartListner;\r\n\r\n    private TextView mEndDisplayDate;\r\n    private DatePickerDialog.OnDateSetListener mDateEndListner;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_projection);\r\n        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);\r\n        setSupportActionBar(toolbar);\r\n\r\n        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);\r\n        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(\r\n                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);\r\n        drawer.addDrawerListener(toggle);\r\n        toggle.syncState();\r\n\r\n        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);\r\n        navigationView.setNavigationItemSelectedListener(this);\r\n        graphAndButtons();\r\n\r\n    }\r\n    @Override\r\n    public void onBackPressed() {\r\n        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);\r\n        if (drawer.isDrawerOpen(GravityCompat.START)) {\r\n            drawer.closeDrawer(GravityCompat.START);\r\n        } else {\r\n            super.onBackPressed();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        // Inflate the menu; this adds items to the action bar if it is present.\r\n        getMenuInflater().inflate(R.menu.main, menu);\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item) {\r\n        // Handle action bar item clicks here. The action bar will\r\n        // automatically handle clicks on the Home/Up button, so long\r\n        // as you specify a parent activity in AndroidManifest.xml.\r\n        int id = item.getItemId();\r\n\r\n        //noinspection SimplifiableIfStatement\r\n        if (id == R.id.action_reset_money) {\r\n            DBHandler db = new DBHandler(this, null, null, 1);\r\n            db.drop(\"Purchases\");\r\n            return true;\r\n        }\r\n        if (id == R.id.action_reset_cat) {\r\n            DBHandler db = new DBHandler(this, null, null, 1);\r\n            db.drop(\"Categories\");\r\n            return true;\r\n        }\r\n        if (id == R.id.action_load_default) {\r\n            return true;\r\n        }\r\n\r\n        return super.onOptionsItemSelected(item);\r\n    }\r\n\r\n    @Override\r\n    public boolean onNavigationItemSelected(MenuItem item) {\r\n        // Handle navigation view item clicks here.\r\n        int id = item.getItemId();\r\n\r\n        if (id == R.id.nav_camera) {\r\n            Intent intent = new Intent(this, Budget.class);\r\n            startActivity(intent);\r\n        } else if (id == R.id.nav_slideshow) {\r\n            Intent intent = new Intent(this, History.class);\r\n            startActivity(intent);\r\n        } else if (id == R.id.nav_manage) {\r\n            Intent intent = new Intent(this, Settings.class);\r\n            startActivity(intent);\r\n        }else if (id == R.id.nav_home) {\r\n            Intent intent = new Intent(this, MainActivity.class);\r\n            startActivity(intent);\r\n        }\r\n\r\n        finish();\r\n        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);\r\n        drawer.closeDrawer(GravityCompat.START);\r\n        return true;\r\n    }\r\n\r\n    public void graphAndButtons(){\r\n        mStartDisplayDate = (TextView) findViewById(R.id.start_date);\r\n        mEndDisplayDate = (TextView) findViewById(R.id.end_date);\r\n\r\n        mStartDisplayDate.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Calendar cal = Calendar.getInstance();\r\n                int year = cal.get(Calendar.YEAR);\r\n                int month = cal.get(Calendar.MONTH);\r\n                int day = cal.get(Calendar.DAY_OF_MONTH);\r\n\r\n                DatePickerDialog dialog = new DatePickerDialog(\r\n                        Projection.this,\r\n                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,\r\n                        mDateStartListner,\r\n                        year, month, day);\r\n                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));\r\n                dialog.show();\r\n            }\r\n        });\r\n\r\n        mDateStartListner = new DatePickerDialog.OnDateSetListener() {\r\n            @Override\r\n            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {\r\n                month = month+1;\r\n                String date = dayOfMonth + \"/\" + month +\"/\" + year;\r\n                mStartDisplayDate.setText(date);\r\n            }\r\n        };\r\n\r\n        mEndDisplayDate.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Calendar cal = Calendar.getInstance();\r\n                int year = cal.get(Calendar.YEAR);\r\n                int month = cal.get(Calendar.MONTH);\r\n                int day = cal.get(Calendar.DAY_OF_MONTH);\r\n\r\n                DatePickerDialog dialog = new DatePickerDialog(\r\n                        Projection.this,\r\n                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,\r\n                        mDateEndListner,\r\n                        year, month, day);\r\n                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));\r\n                dialog.show();\r\n            }\r\n        });\r\n\r\n        mDateEndListner = new DatePickerDialog.OnDateSetListener() {\r\n            @Override\r\n            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {\r\n                month = month+1;\r\n                String date = dayOfMonth + \"/\" + month +\"/\" + year;\r\n                mEndDisplayDate.setText(date);\r\n            }\r\n        };\r\n\r\n\r\n        LineChart chart = (LineChart)findViewById(R.id.chart);\r\n        chart.setDragEnabled(true);\r\n\r\n        ArrayList<EntryPoint> xyvalue = new ArrayList<>();\r\n        int[] yvalues = {1,4,5,6,7,3,4,5,6};\r\n        int[] xvalues = {1,2,3,4,5,6,7,8,9};\r\n        for(int i=0;i<yvalues.length; i++){\r\n            xyvalue.add(new EntryPoint(xvalues[i], yvalues[i]));\r\n        }\r\n\r\n        List<Entry> entries = new ArrayList<>();\r\n\r\n        for (EntryPoint i : xyvalue){\r\n            entries.add(new Entry(i.getX(), i.getY()));\r\n        }\r\n\r\n        LineDataSet set1 = new LineDataSet(entries, \"Date\");\r\n        set1.setHighlightEnabled(true);\r\n        set1.setDrawHighlightIndicators(true);\r\n\r\n        //set1.setFillAlpha(110);\r\n        //set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);\r\n        set1.setFillColor(Color.BLUE);\r\n        set1.setValueFormatter(new MyValueFormatter());\r\n        ArrayList<ILineDataSet> dataSets = new ArrayList<>();\r\n        dataSets.add(set1);\r\n\r\n        LineData lineData = new LineData(dataSets);\r\n\r\n\r\n        YAxis left = chart.getAxisLeft();\r\n        left.setDrawGridLines(false); // no grid lines\r\n        left.setDrawZeroLine(true); // draw a zero line\r\n        chart.getAxisRight().setEnabled(false);\r\n\r\n        XAxis xAxis = chart.getXAxis();\r\n        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);\r\n        xAxis.setDrawAxisLine(true);\r\n        xAxis.setDrawGridLines(false);\r\n\r\n        chart.setTouchEnabled(false);\r\n        chart.setNoDataText(\"Empty\");\r\n        chart.setData(lineData);\r\n        chart.invalidate();\r\n\r\n    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/gobudget/Projection.java	(revision b07ad79fc71d08ae13c0637ca78bd69aa020a4de)
++++ app/src/main/java/com/android/gobudget/Projection.java	(date 1550414815593)
+@@ -2,6 +2,7 @@
+ 
+ import android.app.DatePickerDialog;
+ import android.content.Intent;
++import android.icu.util.LocaleData;
+ import android.os.Bundle;
+ import android.support.design.widget.FloatingActionButton;
+ import android.support.design.widget.NavigationView;
+@@ -14,6 +15,8 @@
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.view.View;
++import android.widget.TableLayout;
++import android.widget.TableRow;
+ import android.widget.TextView;
+ 
+ import com.example.gobudget.R;
+@@ -31,6 +34,9 @@
+ import android.widget.DatePicker;
+ import android.widget.TextView;
+ 
++import java.time.LocalDate;
++import java.time.LocalDateTime;
++import java.time.format.DateTimeFormatter;
+ import java.util.ArrayList;
+ import java.util.Calendar;
+ import java.util.List;
+@@ -47,9 +53,14 @@
+ public class Projection extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+     private TextView mStartDisplayDate;
+     private DatePickerDialog.OnDateSetListener mDateStartListner;
++    private String startDate;
+ 
+     private TextView mEndDisplayDate;
+     private DatePickerDialog.OnDateSetListener mDateEndListner;
++    private String endDate;
++
++    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
++    TextView dblist;
+ 
+ 
+     @Override
+@@ -80,6 +91,7 @@
+         }
+     }
+ 
++
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu; this adds items to the action bar if it is present.
+@@ -163,7 +175,8 @@
+             @Override
+             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                 month = month+1;
+-                String date = dayOfMonth + "/" + month +"/" + year;
++                String date = dayOfMonth + "-" + month +"-" + year;
++                startDate = date;
+                 mStartDisplayDate.setText(date);
+             }
+         };
+@@ -190,14 +203,32 @@
+             @Override
+             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                 month = month+1;
+-                String date = dayOfMonth + "/" + month +"/" + year;
++                String date = dayOfMonth + "-" + month +"-" + year;
++                endDate = date;
+                 mEndDisplayDate.setText(date);
+             }
+         };
+ 
+ 
+-        LineChart chart = (LineChart)findViewById(R.id.chart);
+-        chart.setDragEnabled(true);
++        DBHandler dbHandler = new DBHandler(this, null, null, 1);
++
++        String db = "";
++        ArrayList<Purchase> purchases = dbHandler.loadHandler();
++
++
++        //ArrayList<EntryPoint> xyvalue = new ArrayList<>();
++        PurchaseList purchaseList = new PurchaseList("Temp");
++
++        for(Purchase purchase : purchases) {
++            purchaseList.addPurchase(purchase);
++            LocalDateTime date = purchase.getDate();
++           
++        }
++
++
++        //while(dateTimeFormatter.parse(startDate, D))
++
++       // mEndDisplayDate.setText("" + purchaseList.totals(LocalDate.parse(startDate,dateTimeFormatter), LocalDate.parse(startDate,dateTimeFormatter)));
+ 
+         ArrayList<EntryPoint> xyvalue = new ArrayList<>();
+         int[] yvalues = {1,4,5,6,7,3,4,5,6};
+@@ -208,6 +239,15 @@
+ 
+         List<Entry> entries = new ArrayList<>();
+ 
++
++
++
++        LineChart chart = (LineChart)findViewById(R.id.chart);
++        chart.setDragEnabled(true);
++
++
++
++
+         for (EntryPoint i : xyvalue){
+             entries.add(new Entry(i.getX(), i.getY()));
+         }
+Index: app/src/main/java/com/android/gobudget/Purchase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.gobudget;\r\n\r\nimport android.os.Build;\r\nimport android.support.annotation.RequiresApi;\r\n\r\n\r\nimport java.time.LocalDate;\r\nimport java.time.LocalDateTime;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.time.temporal.TemporalAdjusters;\r\nimport java.util.Calendar;\r\nimport java.time.DayOfWeek;\r\nimport java.util.Date;\r\n\r\n\r\npublic class Purchase {\r\n    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm:ss\");\r\n    private long id;\r\n    private double amount;\r\n    private LocalDateTime date;\r\n    private String name;\r\n\r\n    public long getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(long id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public void setAmount(double amount) {\r\n        this.amount = amount;\r\n    }\r\n\r\n    public LocalDateTime getDate() {\r\n        return date;\r\n    }\r\n\r\n    public void setDate(LocalDateTime date) {\r\n        this.date = date;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public void setCategory(String category) {\r\n        this.category = category;\r\n    }\r\n\r\n    public String getDescription() {\r\n        return description;\r\n    }\r\n\r\n    public void setDescription(String description) {\r\n        this.description = description;\r\n    }\r\n\r\n    private String category;\r\n    private String description;\r\n\r\n    public Purchase() {\r\n    }\r\n\r\n    public Purchase(String date, double amount, String name, String category, String description) {\r\n\r\n        LocalDateTime dateTime = LocalDateTime.parse(date, dateTimeFormatter);\r\n        this.id = System.currentTimeMillis();\r\n        this.date = dateTime;\r\n        this.amount = amount;\r\n        this.name = name;\r\n        this.category = category;\r\n        this.description = description;\r\n    }\r\n\r\n    public Purchase(double amount, String name, String category, String description) {\r\n        this(LocalDateTime.now().format(dateTimeFormatter), amount, name, category, description);\r\n    }\r\n\r\n\r\n    public String getCategory() {\r\n        return this.category;\r\n    }\r\n\r\n    public double getAmount() {\r\n        return this.amount;\r\n    }\r\n\r\n    public String getName() {\r\n        return this.name;\r\n    }\r\n\r\n    public LocalDate getLocalDate() {\r\n        return date.toLocalDate();\r\n    }\r\n\r\n    public boolean thisWeek() {\r\n        LocalDate currDate = date.toLocalDate();\r\n        LocalDate previousMonday = currDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));\r\n        return (currDate.isAfter(previousMonday));\r\n    }\r\n\r\n    public boolean thisBiWeek() {\r\n        LocalDate currDate = date.toLocalDate();\r\n        LocalDate previousBiMonday = currDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));\r\n        previousBiMonday = previousBiMonday.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));\r\n        return (currDate.isAfter(previousBiMonday));\r\n    }\r\n\r\n    public boolean thisMonth() {\r\n        LocalDate currDate = date.toLocalDate();\r\n        LocalDate firstDayOfMonth = currDate.withDayOfMonth(1);\r\n        return (currDate.isAfter(firstDayOfMonth));\r\n    }\r\n\r\n    public boolean thisYear() {\r\n        LocalDate currDate = date.toLocalDate();\r\n        LocalDate firstDayOfYear = currDate.withDayOfYear(1);\r\n        return (currDate.isAfter(firstDayOfYear));\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/gobudget/Purchase.java	(revision b07ad79fc71d08ae13c0637ca78bd69aa020a4de)
++++ app/src/main/java/com/android/gobudget/Purchase.java	(date 1550414815563)
+@@ -35,6 +35,9 @@
+     public LocalDateTime getDate() {
+         return date;
+     }
++    public int getDay(){
++        return date.getDayOfMonth();
++    }
+ 
+     public void setDate(LocalDateTime date) {
+         this.date = date;
+Index: app/src/main/java/com/android/gobudget/EntryPoint.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.gobudget;\r\n\r\npublic class EntryPoint {\r\n    int x, y;\r\n\r\n    public EntryPoint(int x, int y) {\r\n        this.x = x;\r\n        this.y = y;\r\n    }\r\n\r\n    public int getX() {\r\n        return x;\r\n    }\r\n\r\n    public void setX(int x) {\r\n        this.x = x;\r\n    }\r\n\r\n    public int getY() {\r\n        return y;\r\n    }\r\n\r\n    public void setY(int y) {\r\n        this.y = y;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/gobudget/EntryPoint.java	(revision b07ad79fc71d08ae13c0637ca78bd69aa020a4de)
++++ app/src/main/java/com/android/gobudget/EntryPoint.java	(date 1550413804926)
+@@ -1,5 +1,6 @@
+ package com.android.gobudget;
+ 
++
+ public class EntryPoint {
+     int x, y;
+ 
