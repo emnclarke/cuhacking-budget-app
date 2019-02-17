@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 
 public class Budget extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

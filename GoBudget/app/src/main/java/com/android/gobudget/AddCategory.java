@@ -5,7 +5,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

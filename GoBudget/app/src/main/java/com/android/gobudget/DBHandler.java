@@ -66,6 +66,26 @@ public class DBHandler extends SQLiteOpenHelper {
         return purchases;
     }
 
+    public ArrayList<Purchase> loadThreeHandler() {
+        String query = "Select * FROM " + TABLE_NAME + " ORDER BY Date DESC LIMIT 3";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<Purchase> purchases = new ArrayList<Purchase>();
+        while (cursor.moveToNext()) {
+            Purchase purchase = new Purchase();
+            purchase.setId(cursor.getLong(0));
+            purchase.setDate(LocalDateTime.parse(cursor.getString(1), dateTimeFormatter));
+            purchase.setAmount(cursor.getDouble(2));
+            purchase.setName(cursor.getString(3));
+            purchase.setCategory(cursor.getString(4));
+            purchase.setDescription(cursor.getString(5));
+            purchases.add(purchase);
+        }
+        cursor.close();
+        db.close();
+        return purchases;
+    }
+
     public ArrayList<String> getCategories() {
         String query = "Select * FROM Categories";
         SQLiteDatabase db = this.getWritableDatabase();

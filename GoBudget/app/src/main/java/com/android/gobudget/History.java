@@ -19,7 +19,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

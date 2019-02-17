@@ -19,12 +19,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -33,10 +34,14 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     TextView spendMonth;
     TextView spendWeek;
     TextView spendDay;
-    Toolbar toolbar;
+    TextView purchase1;
+    TextView purchase2;
+    TextView purchase3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        toolbar = findViewById(R.id.toolbar);
+        purchase1 = findViewById(R.id.purchase1);
+        purchase2 = findViewById(R.id.purchase2);
+        purchase3 = findViewById(R.id.purchase3);
 
 
         spendMonth = findViewById(R.id.spendMonth);
@@ -92,7 +99,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    public String[] getMostRecent() {
+        DBHandler db = new DBHandler(this, null, null, 1);
+        ArrayList<Purchase> purchases = db.loadThreeHandler();
+        String results[] = new String[3];
+        int i = 0;
+        for (Purchase purchase : purchases) {
+            results[i++] = purchase.getDate().format(dateTimeFormatter) + " " + purchase.getName()
+                    + " " + purchase.getAmount();
+        }
+        return results;
+    }
+
     public String updateTotal(String period) {
+        String[] recents = getMostRecent();
+        purchase1.setText(recents[0]);
+        purchase2.setText(recents[1]);
+        purchase3.setText(recents[2]);
+
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         ArrayList<Purchase> purchases = dbHandler.loadHandler();
         LocalDateTime beginning;
@@ -205,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Testpurchases.add(new Purchase("2019-02-16 12:22:22", 1, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-17 18:22:22", 1, "Coffee", "Food", "Tim's"));
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {

@@ -10,7 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.gobudget.R;
+import com.android.gobudget.R;
 
 public class PopActivity extends AppCompatActivity {
 
