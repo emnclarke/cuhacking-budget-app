@@ -47,7 +47,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {}
 
     public ArrayList<Purchase> loadHandler() {
-        String result = "";
         String query = "Select * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -65,6 +64,19 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return purchases;
+    }
+
+    public ArrayList<String> getCategories() {
+        String query = "Select * FROM Categories";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<String> categories = new ArrayList<String>();
+        while (cursor.moveToNext()) {
+            categories.add(cursor.getString(0));
+        }
+        cursor.close();
+        db.close();
+        return categories;
     }
 
     public void addCategory(String category) {

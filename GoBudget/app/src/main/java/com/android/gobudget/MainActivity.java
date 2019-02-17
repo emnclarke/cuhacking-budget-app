@@ -66,7 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeView();
+                changeViewAdd();
+            }
+        });
+
+        findViewById(R.id.add_cat_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeViewAddCat();
             }
         });
 
@@ -103,8 +110,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void changeView() {
+    public void changeViewAdd() {
         Intent intent = new Intent(this, AddPurchaseActivity.class);
+        startActivity(intent);
+    }
+
+    public void changeViewAddCat() {
+        Intent intent = new Intent(this, AddCategory.class);
         startActivity(intent);
     }
 
