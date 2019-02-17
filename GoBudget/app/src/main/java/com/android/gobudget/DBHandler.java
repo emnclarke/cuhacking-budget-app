@@ -38,6 +38,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 + COLUMN_NAME + " TEXT, " + COLUMN_CATEGORY + " TEXT, "
                 + COLUMN_DESCRIPTION + " TEXT)";
         db.execSQL(CREATE_TABLE);
+
+        CREATE_TABLE = "CREATE TABLE Categories(Category TEXT)";
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override
@@ -62,6 +65,30 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return purchases;
+    }
+
+    public void addCategory(String category) {
+        ContentValues values = new ContentValues();
+        values.put("Category", category);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert("Categories", null, values);
+        db.close();
+    }
+
+    public boolean deleteCategory(String category) {
+        boolean result = false;
+        String query = "Select * FROM Categories WHERE category = '" + category + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            String categoryTemp = cursor.getString(0);
+            db.delete("Categories", "category" + "=?",
+                    new String[] { categoryTemp });
+            cursor.close();
+            result = true;
+        }
+        db.close();
+        return result;
     }
 
     public void addHandler(Purchase purchase) {
