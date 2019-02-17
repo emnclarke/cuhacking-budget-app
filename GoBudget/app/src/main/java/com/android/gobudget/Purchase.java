@@ -35,6 +35,9 @@ public class Purchase {
     public LocalDateTime getDate() {
         return date;
     }
+    public int getDay(){
+        return date.getDayOfMonth();
+    }
 
     public void setDate(LocalDateTime date) {
         this.date = date;

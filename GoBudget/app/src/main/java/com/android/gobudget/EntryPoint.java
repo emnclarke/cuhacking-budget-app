@@ -1,5 +1,6 @@
 package com.android.gobudget;
 
+
 public class EntryPoint {
     int x, y;
 
