@@ -5,6 +5,7 @@ import android.support.annotation.RequiresApi;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class PurchaseList {
@@ -28,6 +29,7 @@ public class PurchaseList {
      * @param week - The first monday of the selected week.
      * @return - The total purchases amount for the week
      */
+
 
     public double weeklyTotal(LocalDate week) {
         if (week.getDayOfWeek() == DayOfWeek.MONDAY) {
@@ -67,6 +69,16 @@ public class PurchaseList {
         double total = 0;
         for (Purchase purchase : purchases) {
             if ((purchase.getLocalDate()).isAfter(start) && purchase.getLocalDate().isBefore(end)) {
+                total += purchase.getAmount();
+            }
+        }
+        return total;
+    }
+
+    public double totals(LocalDateTime start, LocalDateTime end) {
+        double total = 0;
+        for (Purchase purchase : purchases) {
+            if ((purchase.getDate()).isAfter(start) && purchase.getDate().isBefore(end)) {
                 total += purchase.getAmount();
             }
         }
