@@ -19,9 +19,7 @@ import com.example.gobudget.R;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class AddPurchaseActivity extends AppCompatActivity {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -45,7 +43,7 @@ public class AddPurchaseActivity extends AppCompatActivity {
         Testpurchases.add(new Purchase("2019-2-28 22:22:22", 12, "Coffee", "Food", "Food Truck"));
         Testpurchases.add(new Purchase("2019-3-1 12:22:22", 152, "Waffle", "Food", "McDonald's"));
         Testpurchases.add(new Purchase("2019-3-2 12:22:22", 12, "Coffee", "Food", "Tim's"));
-
+        
         return Testpurchases;
     }
 
@@ -67,9 +65,7 @@ public class AddPurchaseActivity extends AppCompatActivity {
 
     public void updateCategories() {
         DBHandler db = new DBHandler(this, null, null, 1);
-        ArrayList<String> categories = db.getCategories();
-        Set uniqueCategories = new HashSet(categories);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList(uniqueCategories));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, db.getCategories());
         pccategory.setAdapter(adapter);
     }
 
@@ -110,10 +106,5 @@ public class AddPurchaseActivity extends AppCompatActivity {
         pcamount.setText("");
         pccategory.setSelection(0);
         pcdescription.setText("");
-    }
-
-    public void addPurchase(Purchase purchase){
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-        dbHandler.addHandler(purchase);
     }
 }
