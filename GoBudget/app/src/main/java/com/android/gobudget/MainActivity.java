@@ -170,16 +170,71 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_load_default) {
             ArrayList<Purchase> Testpurchases = new ArrayList<>();
             Testpurchases.add(new Purchase("2019-02-03 12:22:22", 12, "Coffee", "Food", "Tim's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-03 22:22:22", 102, "Shoes", "Clothes", "Kijiji"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-04 08:21:12", 1000, "Coffee", "Food", "Tim's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-05 12:22:22", 121, "Waffles", "Food", "WaffleHouse"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-15 22:22:22", 12, "Coffee", "Food", "Tim's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-05 02:22:22", 122, "Coffee", "Recreation", "Ree"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-16 12:22:22", 1, "Coffee", "Food", "Tim's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-01 12:22:22", 12, "Coffee", "Food", "Tim's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-14 12:22:22", 122, "Beer", "Food", "Bar"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-15 22:22:22", 12, "Coffee", "Food", "Food Truck"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-17 12:22:22", 152, "Waffle", "Food", "McDonald's"));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Testpurchases.add(new Purchase("2019-02-17 12:22:22", 12, "Coffee", "Food", "Tim's"));
 
 
@@ -189,12 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (Purchase purchase : Testpurchases) {
                 dbHandler.addHandler(purchase);
                 dbHandler.addCategory(purchase.getCategory());
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException("efefefe");
-//                    e.printStackTrace();
-                }
+
             }
             return true;
         }
