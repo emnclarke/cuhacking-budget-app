@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView purchase1;
     TextView purchase2;
     TextView purchase3;
+    FloatingActionsMenu menu;
 
 
     @Override
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        menu = findViewById(R.id.multiple_actions);
 
         purchase1 = findViewById(R.id.purchase1);
         purchase2 = findViewById(R.id.purchase2);
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                collapse();
                 changeViewAdd();
             }
         });
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.add_cat_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                collapse();
                 changeViewAddCat();
             }
         });
@@ -92,11 +97,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.test_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                collapse();
                 spendMonth.setText(updateTotal("month"));
                 spendWeek.setText(updateTotal("week"));
                 spendDay.setText(updateTotal("day"));
             }
         });
+    }
+
+    private void collapse() {
+        menu.collapse();
     }
 
     public String[] getMostRecent() {
