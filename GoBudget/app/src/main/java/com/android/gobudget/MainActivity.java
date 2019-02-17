@@ -13,12 +13,23 @@ import android.view.MenuItem;
 
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.TextView;
 
 import com.example.gobudget.R;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    TextView spendMonth;
+    TextView spendWeek;
+    TextView spendDay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +44,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        spendMonth = findViewById(R.id.spendMonth);
+        spendWeek = findViewById(R.id.spendWeek);
+        spendDay = findViewById(R.id.spendDay);
 
+        spendMonth.setText(updateTotal("month"));
+        spendWeek.setText(updateTotal("week"));
+        spendDay.setText(updateTotal("day"));
 
+        FloatingActionsMenu menu = findViewById(R.id.multiple_actions);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -46,6 +63,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 changeView();
             }
         });
+
+        findViewById(R.id.test_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spendMonth.setText(updateTotal("month"));
+                spendWeek.setText(updateTotal("week"));
+                spendDay.setText(updateTotal("day"));
+            }
+        });
+    }
+
+    public String updateTotal(String period) {
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        ArrayList<Purchase> purchases = dbHandler.loadHandler();
+        LocalDateTime beginning;
+        double amount = 0;
+        switch(period) {
+            case "day": beginning = LocalDateTime.now().withHour(0).withSecond(0); break;
+            case "week": beginning = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).withHour(0).withSecond(0); break;
+            case "month": beginning = LocalDateTime.now().withDayOfMonth(1).withHour(0).withSecond(0); break;
+            default: beginning = null;
+        }
+        if (!purchases.isEmpty()) {
+            for(Purchase purchase : purchases) {
+                if(purchase.getDate().isAfter(beginning)) {
+                    amount += purchase.getAmount();
+                }
+            }
+            return "$" + Double.toString(amount);
+        } else {
+            return "$0.00";
+        }
     }
 
     public void changeView() {
