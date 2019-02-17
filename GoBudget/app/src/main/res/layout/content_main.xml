@@ -56,6 +56,12 @@
             fab:fab_icon="@drawable/ic_plus_12"
             fab:fab_size="normal" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/add_cat_button"
+            android:text="Refresh Page" />
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/test_button"
             android:layout_width="wrap_content"

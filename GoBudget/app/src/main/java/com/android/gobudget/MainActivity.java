@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Testpurchases.add(new Purchase("2019-02-17 12:22:22", 152, "Waffle", "Food", "McDonald's"));
             Testpurchases.add(new Purchase("2019-02-17 12:22:22", 12, "Coffee", "Food", "Tim's"));
 
+
             DBHandler dbHandler = new DBHandler(this, null, null, 1);
             dbHandler.drop("Purchases");
             dbHandler.drop("Categories");
@@ -189,9 +190,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dbHandler.addHandler(purchase);
                 dbHandler.addCategory(purchase.getCategory());
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("efefefe");
+//                    e.printStackTrace();
                 }
             }
             return true;

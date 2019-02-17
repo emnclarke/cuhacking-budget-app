@@ -56,7 +56,6 @@ public class AddPurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_add);
 
-        dblist = findViewById(R.id.lst);
         pcname = findViewById(R.id.pcname);
         pcamount = findViewById(R.id.pcamount);
         pccategory = findViewById(R.id.spinner);
@@ -71,30 +70,6 @@ public class AddPurchaseActivity extends AppCompatActivity {
         Set uniqueCategories = new HashSet(categories);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList(uniqueCategories));
         pccategory.setAdapter(adapter);
-    }
-
-    public void loadPurchases(View view) {
-
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-
-        String db = "";
-        ArrayList<Purchase> purchases = dbHandler.loadHandler();
-
-        for (Purchase purchase : purchases) {
-            long id = purchase.getId();
-            LocalDateTime date = purchase.getDate();
-            double amount = purchase.getAmount();
-            String name = purchase.getName();
-            String category = purchase.getCategory();
-            String description = purchase.getDescription();
-            db += id + " " + date.format(dateTimeFormatter) + " " + amount + " " + name + " " + category + " " + description +
-                    System.getProperty("line.separator");
-        }
-
-        dblist.setText(db);
-        pcname.setText("");
-        pcamount.setText("");
-        pcdescription.setText("");
     }
 
     public void addPurchase(View view) {
