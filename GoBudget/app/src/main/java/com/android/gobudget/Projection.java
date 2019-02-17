@@ -120,9 +120,6 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
         if (id == R.id.nav_camera) {
             Intent intent = new Intent(this, Budget.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, Projection.class);
-            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, History.class);
             startActivity(intent);

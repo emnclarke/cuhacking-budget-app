@@ -13,11 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.example.gobudget.R;
 
-public class History extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
+public class History extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,34 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+
+        String db = "";
+        ArrayList<Purchase> purchases = dbHandler.loadHandler();
+
+        TableLayout layout = (TableLayout) findViewById(R.id.table);
+
+        for(Purchase purchase : purchases) {
+            TableRow row = new TableRow(this);
+
+            long id = purchase.getId();
+
+            LocalDateTime date = purchase.getDate();
+            String amount = String.format("%1$20s",purchase.getAmount());
+            String name =  String.format("%1$20s", purchase.getName());
+            String category = purchase.getCategory();
+            String description = purchase.getDescription();
+            db += date.format(dateTimeFormatter) + " " +  name + " " + amount + " " +
+                    System.getProperty("line.separator");
+        }
+
+        TextView textView = new TextView(this);
+        textView.setText(db);
+        textView.setMinimumWidth(10);
+        //optional: add your buttons to any layout if you want to see them in your screen
+        layout.addView(textView);
+
 
     }
     @Override
@@ -88,9 +125,6 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(this, Projection.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, History.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, Settings.class);

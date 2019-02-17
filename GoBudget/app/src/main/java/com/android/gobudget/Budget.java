@@ -36,6 +36,7 @@ public class Budget extends AppCompatActivity implements NavigationView.OnNaviga
         navigationView.setNavigationItemSelectedListener(this);
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -83,10 +84,8 @@ public class Budget extends AppCompatActivity implements NavigationView.OnNaviga
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            Intent intent = new Intent(this, Budget.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
+
+        if (id == R.id.nav_gallery) {
             Intent intent = new Intent(this, Projection.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
@@ -95,7 +94,7 @@ public class Budget extends AppCompatActivity implements NavigationView.OnNaviga
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
-        }else if (id == R.id.nav_home) {
+        } else if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

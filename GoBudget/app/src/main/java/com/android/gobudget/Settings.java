@@ -103,9 +103,6 @@ Button btn_pop;
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, History.class);
             startActivity(intent);
-        } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(this, Settings.class);
-            startActivity(intent);
         }else if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
