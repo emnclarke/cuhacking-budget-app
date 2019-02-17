@@ -56,6 +56,12 @@
             fab:fab_icon="@drawable/ic_plus_12"
             fab:fab_size="normal" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/add_button"
+            android:text="Update" />
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/test_button"
             android:layout_width="wrap_content"
@@ -176,7 +182,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/spendWeek" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
-
     <TextView
         android:id="@+id/recentPurchasesTitle"
         android:layout_width="wrap_content"

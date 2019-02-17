@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.example.gobudget.R;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -110,6 +112,8 @@ public class AddPurchaseActivity extends AppCompatActivity {
         pcamount.setText("");
         pccategory.setSelection(0);
         pcdescription.setText("");
+
+
     }
 
     public void addPurchase(Purchase purchase){
