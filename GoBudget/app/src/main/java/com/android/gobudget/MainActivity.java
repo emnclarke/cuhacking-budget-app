@@ -1,6 +1,9 @@
 package com.android.gobudget;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,6 +16,7 @@ import android.view.MenuItem;
 
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.example.gobudget.R;
@@ -24,12 +28,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     TextView spendMonth;
     TextView spendWeek;
     TextView spendDay;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +166,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 }
