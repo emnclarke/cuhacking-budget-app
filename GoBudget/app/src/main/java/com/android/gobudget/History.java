@@ -116,9 +116,6 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(this, Projection.class);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, History.class);
-            startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
