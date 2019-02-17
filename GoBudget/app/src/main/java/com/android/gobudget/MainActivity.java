@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
 
 
-
         spendMonth = findViewById(R.id.spendMonth);
         spendWeek = findViewById(R.id.spendWeek);
         spendDay = findViewById(R.id.spendDay);
+
 
         spendMonth.setText(updateTotal("month"));
         spendWeek.setText(updateTotal("week"));
@@ -97,15 +97,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ArrayList<Purchase> purchases = dbHandler.loadHandler();
         LocalDateTime beginning;
         double amount = 0;
-        switch(period) {
-            case "day": beginning = LocalDateTime.now().withHour(0).withSecond(0); break;
-            case "week": beginning = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).withHour(0).withSecond(0); break;
-            case "month": beginning = LocalDateTime.now().withDayOfMonth(1).withHour(0).withSecond(0); break;
-            default: beginning = null;
+        switch (period) {
+            case "day":
+                beginning = LocalDateTime.now().withHour(0).withSecond(0);
+                break;
+            case "week":
+                beginning = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).withHour(0).withSecond(0);
+                break;
+            case "month":
+                beginning = LocalDateTime.now().withDayOfMonth(1).withHour(0).withSecond(0);
+                break;
+            default:
+                beginning = null;
         }
         if (!purchases.isEmpty()) {
-            for(Purchase purchase : purchases) {
-                if(purchase.getDate().isAfter(beginning)) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getDate().isAfter(beginning)) {
                     amount += purchase.getAmount();
                 }
             }
@@ -161,6 +168,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         if (id == R.id.action_load_default) {
+            ArrayList<Purchase> Testpurchases = new ArrayList<>();
+            Testpurchases.add(new Purchase("2019-02-03 12:22:22", 12, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-03 22:22:22", 102, "Shoes", "Clothes", "Kijiji"));
+            Testpurchases.add(new Purchase("2019-02-04 08:21:12", 1000, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-05 12:22:22", 121, "Waffles", "Food", "WaffleHouse"));
+            Testpurchases.add(new Purchase("2019-02-15 22:22:22", 12, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-05 02:22:22", 122, "Coffee", "Recreation", "Ree"));
+            Testpurchases.add(new Purchase("2019-02-16 12:22:22", 1, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-01 12:22:22", 12, "Coffee", "Food", "Tim's"));
+            Testpurchases.add(new Purchase("2019-02-14 12:22:22", 122, "Beer", "Food", "Bar"));
+            Testpurchases.add(new Purchase("2019-02-15 22:22:22", 12, "Coffee", "Food", "Food Truck"));
+            Testpurchases.add(new Purchase("2019-02-17 12:22:22", 152, "Waffle", "Food", "McDonald's"));
+            Testpurchases.add(new Purchase("2019-02-17 12:22:22", 12, "Coffee", "Food", "Tim's"));
+
+            DBHandler dbHandler = new DBHandler(this, null, null, 1);
+            dbHandler.drop("Purchases");
+            dbHandler.drop("Categories");
+            for (Purchase purchase : Testpurchases) {
+                dbHandler.addHandler(purchase);
+                dbHandler.addCategory(purchase.getCategory());
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         }
 
@@ -183,7 +216,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, Settings.class);
-            startActivity(intent);}
+            startActivity(intent);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
