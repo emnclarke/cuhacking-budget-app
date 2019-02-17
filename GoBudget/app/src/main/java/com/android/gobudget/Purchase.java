@@ -65,7 +65,7 @@ public class Purchase {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Purchase(String date, double amount, String name, String category, String description) {
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(date, dateTimeFormatter);
         this.id = System.currentTimeMillis();
         this.amount = amount;
