@@ -34,7 +34,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + COLUMN_ID
-                + " INTEGER PRIMARY KEY, " + COLUMN_DATE + " TEXT, " + COLUMN_AMOUNT + " REAL, "
+                + " TEXT PRIMARY KEY, " + COLUMN_DATE + " TEXT, " + COLUMN_AMOUNT + " REAL, "
                 + COLUMN_NAME + " TEXT, " + COLUMN_CATEGORY + " TEXT, "
                 + COLUMN_DESCRIPTION + " TEXT)";
         db.execSQL(CREATE_TABLE);
@@ -51,7 +51,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ArrayList<Purchase> purchases = new ArrayList<Purchase>();
         while (cursor.moveToNext()) {
             Purchase purchase = new Purchase();
-            purchase.setId(Integer.parseInt(cursor.getString(0)));
+            purchase.setId(cursor.getLong(0));
             purchase.setDate(LocalDateTime.parse(cursor.getString(1), dateTimeFormatter));
             purchase.setAmount(cursor.getDouble(2));
             purchase.setName(cursor.getString(3));
@@ -66,7 +66,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void addHandler(Purchase purchase) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, (int)purchase.getId());
+        values.put(COLUMN_ID, purchase.getId());
         values.put(COLUMN_DATE, purchase.getDate().format(dateTimeFormatter));
         values.put(COLUMN_AMOUNT, purchase.getAmount());
         values.put(COLUMN_NAME, purchase.getName());
