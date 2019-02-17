@@ -15,9 +15,11 @@ import android.widget.TextView;
 import com.example.gobudget.R;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     TextView dblist;
     TextInputEditText pcname;
     TextInputEditText pcamount;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             String name = purchase.getName();
             String category = purchase.getCategory();
             String description = purchase.getDescription();
-            db += id + " " + date.toString() + " " + amount + " " + name + " " + category  + " " + description +
+            db += id + " " + date.format(dateTimeFormatter) + " " + amount + " " + name + " " + category  + " " + description +
                     System.getProperty("line.separator");
         }
 
