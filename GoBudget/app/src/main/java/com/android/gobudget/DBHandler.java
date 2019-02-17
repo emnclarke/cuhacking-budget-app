@@ -49,8 +49,8 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<Purchase> purchases = new ArrayList<Purchase>();
-        Purchase purchase = new Purchase();
         while (cursor.moveToNext()) {
+            Purchase purchase = new Purchase();
             purchase.setId(Integer.parseInt(cursor.getString(0)));
             purchase.setDate(LocalDateTime.parse(cursor.getString(1), dateTimeFormatter));
             purchase.setAmount(cursor.getDouble(2));
