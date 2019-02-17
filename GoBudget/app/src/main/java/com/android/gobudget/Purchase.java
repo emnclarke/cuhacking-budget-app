@@ -6,9 +6,11 @@ import android.support.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.time.DayOfWeek;
+import java.util.Date;
 
 
 public class Purchase {
@@ -59,14 +61,24 @@ public class Purchase {
     public Purchase() {
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Purchase(double amount, String name, String category, String description) {
-        date = LocalDateTime.now();
+    public Purchase(String date, double amount, String name, String category, String description) {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(date, dateTimeFormatter);
+        this.id = System.currentTimeMillis();
         this.amount = amount;
         this.name = name;
         this.category = category;
         this.description = description;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Purchase(double amount, String name, String category, String description) {
+        this(LocalDateTime.now().toString(), amount, name, category, description);
+    }
+
 
     public String getCategory() {
         return this.category;
