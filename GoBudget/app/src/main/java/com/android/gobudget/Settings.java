@@ -100,6 +100,7 @@ Button btn_pop;
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+        finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

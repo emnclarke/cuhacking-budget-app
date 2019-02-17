@@ -89,6 +89,7 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+        finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
