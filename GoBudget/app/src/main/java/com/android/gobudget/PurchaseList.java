@@ -17,7 +17,7 @@ public class PurchaseList {
     }
 
     public boolean addPurchase(Purchase purchase) {
-        if (purchase.getCategory() != this.category) {
+        if (purchase.getCategory() != this.category && category != "all") {
             return false;
         }
         purchases.add(purchase);
@@ -28,7 +28,7 @@ public class PurchaseList {
      * @param week - The first monday of the selected week.
      * @return - The total purchases amount for the week
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public double weeklyTotal(LocalDate week) {
         if (week.getDayOfWeek() == DayOfWeek.MONDAY) {
             LocalDate start = week;
@@ -39,7 +39,6 @@ public class PurchaseList {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public double biweeklyTotal(LocalDate week) {
         if (week.getDayOfWeek() == DayOfWeek.MONDAY) {
             LocalDate start = week;
@@ -50,14 +49,13 @@ public class PurchaseList {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public double monthlyTotal(LocalDate month) {
         LocalDate start = month.withDayOfMonth(1);
         LocalDate end = month.withDayOfMonth(month.lengthOfMonth());
         return (totals(start, end));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public double yearlyTotal(LocalDate year) {
         LocalDate start = year.withDayOfYear(1);
         LocalDate end = year.withDayOfYear(year.lengthOfYear());
@@ -65,7 +63,6 @@ public class PurchaseList {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public double totals(LocalDate start, LocalDate end) {
         double total = 0;
         for (Purchase purchase : purchases) {
