@@ -31,8 +31,28 @@ public class AddPurchaseActivity extends AppCompatActivity {
     Spinner pccategory;
     TextInputEditText pcdescription;
 
+    public ArrayList<Purchase> createExampleArray() {
+        ArrayList<Purchase> Testpurchases = new ArrayList<>();
+        Testpurchases.add(new Purchase("2019-2-23 12:22:22", 12, "Coffee", "Food", "Tim's"));
+        Testpurchases.add(new Purchase("2019-2-23 22:22:22", 102, "Shoes", "Clothes", "Kijiji"));
+        Testpurchases.add(new Purchase("2019-2-24 8:21:12", 1000, "Coffee", "Food", "Tim's"));
+        Testpurchases.add(new Purchase("2019-2-25 12:22:22", 121, "Waffles", "Food", "WaffleHouse"));
+        Testpurchases.add(new Purchase("2019-2-25 22:22:22", 12, "Coffee", "Food", "Tim's"));
+        Testpurchases.add(new Purchase("2019-2-25 2:22:22", 122, "Coffee", "Recreation", "Ree"));
+        Testpurchases.add(new Purchase("2019-2-26 12:22:22", 1, "Coffee", "Food", "Tim's"));
+        Testpurchases.add(new Purchase("2019-2-27 12:22:22", 12, "Coffee", "Food", "Tim's"));
+        Testpurchases.add(new Purchase("2019-2-28 12:22:22", 122, "Beer", "Food", "Bar"));
+        Testpurchases.add(new Purchase("2019-2-28 22:22:22", 12, "Coffee", "Food", "Food Truck"));
+        Testpurchases.add(new Purchase("2019-3-1 12:22:22", 152, "Waffle", "Food", "McDonald's"));
+        Testpurchases.add(new Purchase("2019-3-2 12:22:22", 12, "Coffee", "Food", "Tim's"));
+        
+        return Testpurchases;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_add);
 
@@ -58,14 +78,14 @@ public class AddPurchaseActivity extends AppCompatActivity {
         String db = "";
         ArrayList<Purchase> purchases = dbHandler.loadHandler();
 
-        for(Purchase purchase : purchases) {
+        for (Purchase purchase : purchases) {
             long id = purchase.getId();
             LocalDateTime date = purchase.getDate();
             double amount = purchase.getAmount();
             String name = purchase.getName();
             String category = purchase.getCategory();
             String description = purchase.getDescription();
-            db += id + " " + date.format(dateTimeFormatter) + " " + amount + " " + name + " " + category  + " " + description +
+            db += id + " " + date.format(dateTimeFormatter) + " " + amount + " " + name + " " + category + " " + description +
                     System.getProperty("line.separator");
         }
 
