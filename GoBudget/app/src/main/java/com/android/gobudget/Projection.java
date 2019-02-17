@@ -124,6 +124,7 @@ public class Projection extends AppCompatActivity implements NavigationView.OnNa
             startActivity(intent);
         }
 
+        finish();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
