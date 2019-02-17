@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     //information of database
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "transactionsDB.db";
@@ -32,9 +34,9 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + COLUMN_ID
-                + "INTEGER PRIMARYKEY," + COLUMN_DATE + "TEXT," + COLUMN_AMOUNT + "REAL,"
-                + COLUMN_NAME + "TEXT, " + COLUMN_CATEGORY + "TEXT,"
-                + COLUMN_DESCRIPTION + "TEXT )";
+                + " LONG PRIMARY KEY," + COLUMN_DATE + " TEXT, " + COLUMN_AMOUNT + " REAL, "
+                + COLUMN_NAME + " TEXT, " + COLUMN_CATEGORY + " TEXT, "
+                + COLUMN_DESCRIPTION + " TEXT )";
         db.execSQL(CREATE_TABLE);
     }
 
@@ -50,8 +52,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Purchase purchase = new Purchase();
         while (cursor.moveToNext()) {
             purchase.setId(Integer.parseInt(cursor.getString(0)));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
-            purchase.setDate(LocalDateTime.parse(cursor.getString(1), formatter));
+            purchase.setDate(LocalDateTime.parse(cursor.getString(1), dateTimeFormatter));
             purchase.setAmount(cursor.getDouble(2));
             purchase.setName(cursor.getString(3));
             purchase.setCategory(cursor.getString(4));
@@ -66,7 +67,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addHandler(Purchase purchase) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, purchase.getId());
-        values.put(COLUMN_DATE, purchase.getDate().toString());
+        values.put(COLUMN_DATE, purchase.getDate().format(dateTimeFormatter));
         values.put(COLUMN_AMOUNT, purchase.getAmount());
         values.put(COLUMN_NAME, purchase.getName());
         values.put(COLUMN_CATEGORY, purchase.getCategory());
@@ -76,8 +77,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Purchase findHandler(long id) {
-        String query = "Select * FROM " + TABLE_NAME + "WHERE" + COLUMN_ID + " = " + "'" + id + "'";
+    public Purchase findHandler(String column, String variable) {
+        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = " + "'" + variable + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Purchase purchase = new Purchase();
@@ -100,7 +101,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public boolean deleteHandler(int id) {
         boolean result = false;
-        String query = "Select * FROM " + TABLE_NAME + "WHERE" + COLUMN_ID + "= '" + String.valueOf(id) + "'";
+        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = '" + String.valueOf(id) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Purchase purchase = new Purchase();
