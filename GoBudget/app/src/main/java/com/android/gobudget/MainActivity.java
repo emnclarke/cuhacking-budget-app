@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView spendMonth;
     TextView spendWeek;
     TextView spendDay;
-    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        toolbar = findViewById(R.id.toolbar);
-
-
 
         spendMonth = findViewById(R.id.spendMonth);
         spendWeek = findViewById(R.id.spendWeek);
