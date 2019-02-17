@@ -12,7 +12,4 @@
     <string name="title_activity_history">History</string>
     <string name="title_activity_pop">PopActivity</string>
     <string name="title_activity_purchase_form">PurchaseForm</string>
-    <string name="spendDay">$0.00</string>
-    <string name="spendWeek">$0.00</string>
-    <string name="spendMonth">$0.00</string>
 </resources>
