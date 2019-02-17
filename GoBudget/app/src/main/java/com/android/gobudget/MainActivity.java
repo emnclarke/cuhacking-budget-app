@@ -2,7 +2,6 @@ package com.android.gobudget;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
@@ -16,9 +15,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 
 import com.example.gobudget.R;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeView();
+            }
+        });
     }
+
+    public void changeView() {
+        Intent intent = new Intent(this, AddPurchaseActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
-        }else if (id == R.id.nav_home) {
+        } else if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

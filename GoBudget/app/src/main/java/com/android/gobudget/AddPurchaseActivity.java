@@ -29,9 +29,7 @@ public class AddPurchaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.content_add);
 
         dblist = findViewById(R.id.lst);
         pcname = findViewById(R.id.pcname);
