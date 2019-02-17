@@ -16,9 +16,9 @@ public class AddCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_add);
+        setContentView(R.layout.content_addcat);
 
-        category = findViewById(R.id.add_cat_button);
+        category = findViewById(R.id.addcategory);
     }
 
     public ArrayList<String> getCategories(View view) {

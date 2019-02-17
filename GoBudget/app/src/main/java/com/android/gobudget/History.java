@@ -61,7 +61,17 @@ public class History extends AppCompatActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reset_money) {
+            DBHandler db = new DBHandler(this, null, null, 1);
+            db.drop("Purchases");
+            return true;
+        }
+        if (id == R.id.action_reset_cat) {
+            DBHandler db = new DBHandler(this, null, null, 1);
+            db.drop("Categories");
+            return true;
+        }
+        if (id == R.id.action_load_default) {
             return true;
         }
 

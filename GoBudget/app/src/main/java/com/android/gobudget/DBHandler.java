@@ -39,7 +39,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + COLUMN_DESCRIPTION + " TEXT)";
         db.execSQL(CREATE_TABLE);
 
-        CREATE_TABLE = "CREATE TABLE Categories(Category TEXT)";
+        CREATE_TABLE = "CREATE TABLE Categories(ID INTEGER PRIMARY KEY, Category TEXT)";
         db.execSQL(CREATE_TABLE);
     }
 
@@ -72,7 +72,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<String> categories = new ArrayList<String>();
         while (cursor.moveToNext()) {
-            categories.add(cursor.getString(0));
+            categories.add(cursor.getString(1));
         }
         cursor.close();
         db.close();
@@ -81,6 +81,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void addCategory(String category) {
         ContentValues values = new ContentValues();
+        values.put("ID", System.currentTimeMillis());
         values.put("Category", category);
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert("Categories", null, values);
@@ -166,6 +167,25 @@ public class DBHandler extends SQLiteOpenHelper {
         args.put(COLUMN_CATEGORY, category);
         args.put(COLUMN_DESCRIPTION, description);
         return db.update(TABLE_NAME, args, COLUMN_ID + "=" + id, null) > 0;
+    }
+
+    public void drop(String table) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE " + table + ";");
+
+        switch(table) {
+            case "Purchases":
+                String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + COLUMN_ID
+                        + " TEXT PRIMARY KEY, " + COLUMN_DATE + " TEXT, " + COLUMN_AMOUNT + " REAL, "
+                        + COLUMN_NAME + " TEXT, " + COLUMN_CATEGORY + " TEXT, "
+                        + COLUMN_DESCRIPTION + " TEXT)";
+                db.execSQL(CREATE_TABLE);
+                break;
+            case "Categories":
+                CREATE_TABLE = "CREATE TABLE Categories(ID INTEGER PRIMARY KEY, Category TEXT)";
+                db.execSQL(CREATE_TABLE);
+                break;
+        }
     }
 
 }

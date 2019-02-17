@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView spendMonth;
     TextView spendWeek;
     TextView spendDay;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        toolbar = findViewById(R.id.toolbar);
+
+
 
         spendMonth = findViewById(R.id.spendMonth);
         spendWeek = findViewById(R.id.spendWeek);
@@ -145,7 +150,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reset_money) {
+            DBHandler db = new DBHandler(this, null, null, 1);
+            db.drop("Purchases");
+            return true;
+        }
+        if (id == R.id.action_reset_cat) {
+            DBHandler db = new DBHandler(this, null, null, 1);
+            db.drop("Categories");
+            return true;
+        }
+        if (id == R.id.action_load_default) {
             return true;
         }
 

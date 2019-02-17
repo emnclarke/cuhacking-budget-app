@@ -4,7 +4,7 @@
     android:id="@+id/activity_add"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.gobudget.MainActivity"
+    tools:context="com.android.gobudget.AddCategory"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 

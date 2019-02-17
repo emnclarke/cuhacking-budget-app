@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.gobudget.R;
@@ -17,13 +19,14 @@ import com.example.gobudget.R;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddPurchaseActivity extends AppCompatActivity {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     TextView dblist;
     TextInputEditText pcname;
     TextInputEditText pcamount;
-    TextInputEditText pccategory;
+    Spinner pccategory;
     TextInputEditText pcdescription;
 
     @Override
@@ -34,8 +37,16 @@ public class AddPurchaseActivity extends AppCompatActivity {
         dblist = findViewById(R.id.lst);
         pcname = findViewById(R.id.pcname);
         pcamount = findViewById(R.id.pcamount);
-        pccategory = findViewById(R.id.pccategory);
+        pccategory = findViewById(R.id.spinner);
         pcdescription = findViewById(R.id.pcdescription);
+
+        updateCategories();
+    }
+
+    public void updateCategories() {
+        DBHandler db = new DBHandler(this, null, null, 1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, db.getCategories());
+        pccategory.setAdapter(adapter);
     }
 
     public void loadPurchases(View view) {
@@ -59,7 +70,6 @@ public class AddPurchaseActivity extends AppCompatActivity {
         dblist.setText(db);
         pcname.setText("");
         pcamount.setText("");
-        pccategory.setText("");
         pcdescription.setText("");
     }
 
@@ -68,13 +78,13 @@ public class AddPurchaseActivity extends AppCompatActivity {
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         double amount = Double.parseDouble(pcamount.getText().toString());
         String name = pcname.getText().toString();
-        String category = pccategory.getText().toString();
+        String category = pccategory.getSelectedItem().toString();
         String description = pcname.getText().toString();
         Purchase purchase = new Purchase(amount, name, category, description);
         dbHandler.addHandler(purchase);
         pcname.setText("");
         pcamount.setText("");
-        pccategory.setText("");
+        pccategory.setSelection(0);
         pcdescription.setText("");
     }
 }
